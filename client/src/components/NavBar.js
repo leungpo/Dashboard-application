@@ -11,7 +11,7 @@ import FlexBetween from "components/FlexBetween";
 import { useDispatch } from 'react-redux';
 import { setMode } from 'state';
 import profileImage from "assets/icon.png";
-import { AppBar, IconButton, InputBase, Toolbar, useTheme } from '@mui/material';
+import { AppBar, Icon, IconButton, InputBase, Toolbar, useTheme } from '@mui/material';
 
 export default function NavBar() {
     const dispatch = useDispatch();
@@ -34,13 +34,27 @@ export default function NavBar() {
                 backgroundColor={theme.palette.background.alt}
                 borderRadius="9px"
                 gap="3rem"
-                p="0.1rem 1.5rem" 
+                p="0.1rem 1.2rem" 
             >
                 <InputBase placeholder="Search..." />
                 <IconButton>
                     <Search />
                 </IconButton>
             </FlexBetween>
+        </FlexBetween>
+
+        {/* Right side */}
+        <FlexBetween gap="1.5rem">
+            <IconButton onClick={() => dispatch(setMode())}>
+                {theme.palette.mode === 'dark' ? (
+                    <DarkModeOutlined sx={{ fontSize: "25px"}} />
+                ) : (
+                    <LightModeOutlined sx={{fontSize: "25px"}} />
+                )}
+            </IconButton>
+            <IconButton>
+                <SettingsOutlined sx={{fontSize: "25px"}} />
+            </IconButton>
         </FlexBetween>
     </Toolbar>
 
