@@ -11,11 +11,13 @@ import FlexBetween from "components/FlexBetween";
 import { useDispatch } from 'react-redux';
 import { setMode } from 'state';
 import profileImage from "assets/icon.png";
+import ChangeMode from "scenes/layout/ChangeMode";
 import { AppBar, Icon, IconButton, InputBase, Toolbar, useTheme } from '@mui/material';
 
 export default function NavBar() {
     const dispatch = useDispatch();
     const theme = useTheme();
+    
   return (
    <AppBar
     sx={{
@@ -46,11 +48,7 @@ export default function NavBar() {
         {/* Right side */}
         <FlexBetween gap="1.5rem">
             <IconButton onClick={() => dispatch(setMode())}>
-                {theme.palette.mode === 'dark' ? (
-                    <DarkModeOutlined sx={{ fontSize: "25px"}} />
-                ) : (
-                    <LightModeOutlined sx={{fontSize: "25px"}} />
-                )}
+                <ChangeMode theme={theme}/>
             </IconButton>
             <IconButton>
                 <SettingsOutlined sx={{fontSize: "25px"}} />
