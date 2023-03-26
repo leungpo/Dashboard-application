@@ -1,4 +1,4 @@
-package com.app.dashboard;
+package com.app.dashboard.exception;
 
 public class UserNotFoundException extends RuntimeException{
     public UserNotFoundException() {

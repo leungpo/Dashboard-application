@@ -1,5 +1,6 @@
-package com.app.dashboard;
+package com.app.dashboard.repository;
 
+import com.app.dashboard.entity.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

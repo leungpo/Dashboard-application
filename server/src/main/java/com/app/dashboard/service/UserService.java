@@ -1,5 +1,8 @@
-package com.app.dashboard;
+package com.app.dashboard.service;
 
+import com.app.dashboard.entity.User;
+import com.app.dashboard.exception.UserNotFoundException;
+import com.app.dashboard.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
