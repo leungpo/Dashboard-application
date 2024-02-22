@@ -2,6 +2,7 @@ package com.app.dashboard;
 
 import com.app.dashboard.controller.DashboardUserController;
 import com.app.dashboard.entity.DashboardUserPo;
+import com.app.dashboard.exception.UserNotFoundException;
 import com.app.dashboard.service.DashboardUserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ public class DashboardUserControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    ObjectMapper objectMapper;
 
     @MockBean
     DashboardUserService dashboardUserService;
@@ -42,6 +43,28 @@ public class DashboardUserControllerTest {
                 .contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(dashBoardUser)));
+
+        //then
+        verify(dashboardUserService, times(1)).getDashboardUser(dashBoardUser.getId());
+    }
+
+    /**
+     * should: return 404
+     * when: cannot find user
+     * given: no user information
+     */
+    @Test
+    void should_return_404_when_cannot_find_user_given_no_user_information() throws Exception {
+        //given
+        DashboardUserPo dashBoardUser = DashboardUserPo.builder()
+                .id(ID)
+                .build();
+        doThrow(new UserNotFoundException()).when(dashboardUserService).getDashboardUser(ID);
+
+        //when
+        mockMvc.perform(get("/users/{userId}", dashBoardUser.getId())
+                        .contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
 
         //then
         verify(dashboardUserService, times(1)).getDashboardUser(dashBoardUser.getId());
