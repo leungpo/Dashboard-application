@@ -10,7 +10,24 @@ public class DashboardUserService {
     @Autowired
     DashboardUserRepository dashboardUserRepository;
 
-    public DashboardUserPo getDashboardUser(String userName) {
-        return dashboardUserRepository.findUserByUserId(userName);
+    public DashboardUserPo getDashboardUser(String userId) {
+        return dashboardUserRepository.findUserByUserId(userId);
+    }
+
+    public DashboardUserPo inputDashboardUser() {
+        DashboardUserPo user = DashboardUserPo.builder()
+                .userId("123")
+                .name("abd")
+                .email("email")
+                .password("password")
+                .cityId("cityId")
+                .state(true)
+                .countryId("countryId")
+                .occupation("occupation")
+                .phoneNumber("phoneNumber")
+                .role("role")
+                .transactions(null)
+                .build();
+        return dashboardUserRepository.save(user);
     }
 }

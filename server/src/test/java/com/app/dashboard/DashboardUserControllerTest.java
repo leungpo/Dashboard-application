@@ -47,24 +47,24 @@ public class DashboardUserControllerTest {
     }
 
     /**
-     * should: return 404
+     * should: return 204
      * when: cannot find user
      * given: no user information
      */
     @Test
-    void should_return_404_when_cannot_find_user_given_no_user_information() throws Exception {
+    void should_return_204_when_cannot_find_user_given_no_user_information() throws Exception {
         //given
-        DashboardUserPo dashBoardUser = DashboardUserPo.builder()
+        DashboardUserPo dashboardUser = DashboardUserPo.builder()
                 .userId(USER_ID)
                 .build();
         doReturn(null).when(dashboardUserService).getDashboardUser(USER_ID);
 
         //when
-        mockMvc.perform(get("/users/{userId}", dashBoardUser.getUserId())
+        mockMvc.perform(get("/users/{userId}", dashboardUser.getUserId())
                         .contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         //then
-        verify(dashboardUserService, times(1)).getDashboardUser(dashBoardUser.getUserId());
+        verify(dashboardUserService, times(1)).getDashboardUser(dashboardUser.getUserId());
     }
 }
