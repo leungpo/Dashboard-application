@@ -2,7 +2,6 @@ package com.app.dashboard;
 
 import com.app.dashboard.controller.DashboardUserController;
 import com.app.dashboard.entity.DashboardUserPo;
-import com.app.dashboard.exception.UserNotFoundException;
 import com.app.dashboard.service.DashboardUserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.mockito.Mockito.*;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
@@ -28,24 +26,24 @@ public class DashboardUserControllerTest {
     @MockBean
     DashboardUserService dashboardUserService;
 
-    public static final String ID = "ID";
+    public static final String USER_ID = "ID";
 
     @Test
     void should_get_user_when_perform_get_by_id_given_a_id() throws Exception {
         //given
         DashboardUserPo dashBoardUser = DashboardUserPo.builder()
-                .id(ID)
+                .userId(USER_ID)
                 .build();
-        doReturn(dashBoardUser).when(dashboardUserService).getDashboardUser(ID);
+        doReturn(dashBoardUser).when(dashboardUserService).getDashboardUser(USER_ID);
 
         //when
-        mockMvc.perform(get("/users/{userId}", dashBoardUser.getId())
+        mockMvc.perform(get("/users/{userId}", dashBoardUser.getUserId())
                 .contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(dashBoardUser)));
 
         //then
-        verify(dashboardUserService, times(1)).getDashboardUser(dashBoardUser.getId());
+        verify(dashboardUserService, times(1)).getDashboardUser(dashBoardUser.getUserId());
     }
 
     /**
@@ -57,16 +55,16 @@ public class DashboardUserControllerTest {
     void should_return_404_when_cannot_find_user_given_no_user_information() throws Exception {
         //given
         DashboardUserPo dashBoardUser = DashboardUserPo.builder()
-                .id(ID)
+                .userId(USER_ID)
                 .build();
-        doThrow(new UserNotFoundException()).when(dashboardUserService).getDashboardUser(ID);
+        doReturn(null).when(dashboardUserService).getDashboardUser(USER_ID);
 
         //when
-        mockMvc.perform(get("/users/{userId}", dashBoardUser.getId())
+        mockMvc.perform(get("/users/{userId}", dashBoardUser.getUserId())
                         .contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
 
         //then
-        verify(dashboardUserService, times(1)).getDashboardUser(dashBoardUser.getId());
+        verify(dashboardUserService, times(1)).getDashboardUser(dashBoardUser.getUserId());
     }
 }
